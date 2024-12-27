@@ -1,8 +1,9 @@
 import pygame
+import sys
 from src.Background import Background
 from src.Monster import Monster
 from src.Player import Player
-from src.Gui import Gui
+from src.Score import Score
 from assets.sfx import *
 import random
 
@@ -18,7 +19,7 @@ class Game:
         player = Player(self.screen, 1)
         pygame.mixer.init()
         score = 0
-        gui_score = Gui(self.screen, score)
+        gui_score = Score(self.screen, score, (10, 10))
 
         #sfx
         sweep = pygame.mixer.Sound("assets/sfx/sweep.wav")
@@ -33,14 +34,12 @@ class Game:
             clock.tick(120)
 
 
-            #handle music
-
             #handle background
             background = Background(self.screen)
             background.run_background()
 
             #handle counters
-            gui_score.run_gui()
+            gui_score.run_score()
 
             #handle player
             player.run_player()
@@ -72,6 +71,8 @@ class Game:
                     player.rect.x = 50
                     player.rect.y = 300
                     self.screen.fill((0, 0, 0))
+                    gui_score.reset()
+                    monsters.clear()
 
 
 
@@ -81,4 +82,5 @@ class Game:
             #handle close the game
             for event in pygame.event.get():    
                 if event.type == pygame.QUIT:
-                    exit()
+                    pygame.quit()
+                    sys.exit()
